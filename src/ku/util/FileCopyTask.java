@@ -27,7 +27,7 @@ import stopwatch.TaskTimer;
  * project's src/ directory. It is a standard technique for opening resources.
  * 
  * @author Chawakorn Suphepre
- * @version 2017.03.03
+ * @version 2017.03.30
  */
 public class FileCopyTask implements Runnable {
 	/** The InputStream that data will be read form. */
@@ -143,9 +143,10 @@ public class FileCopyTask implements Runnable {
 
 		// Define a FileUtil task to copy a file byte by byte.
 		// This is an anonymous class that extends FileUtilTimer.
-		final int oneKB = 1024;
-		final int fourKB = oneKB * 4;
-		final int sixFourKB = oneKB * 64;
+		final int ONE_KB = 1024;
+		final int FOUR_KB = ONE_KB * 4;
+		final int SIXFOUR_KB = ONE_KB * 64;
+		final int TWOFIVESIX_KB = SIXFOUR_KB * 4;
 		FileCopyTask task1 = new FileCopyTask(inputFilename, "copy.txt") {
 			public void run() {
 				FileUtil.copy(in, out);
@@ -157,7 +158,7 @@ public class FileCopyTask implements Runnable {
 		};
 		FileCopyTask task2 = new FileCopyTask(inputFilename, "copy2.txt") {
 			public void run() {
-				FileUtil.copy(in, out, oneKB);
+				FileUtil.copy(in, out, ONE_KB);
 			}
 
 			public String toString() {
@@ -166,7 +167,7 @@ public class FileCopyTask implements Runnable {
 		};
 		FileCopyTask task3 = new FileCopyTask(inputFilename, "copy3.txt") {
 			public void run() {
-				FileUtil.copy(in, out, fourKB);
+				FileUtil.copy(in, out, FOUR_KB);
 			}
 
 			public String toString() {
@@ -175,11 +176,20 @@ public class FileCopyTask implements Runnable {
 		};
 		FileCopyTask task4 = new FileCopyTask(inputFilename, "copy4.txt") {
 			public void run() {
-				FileUtil.copy(in, out, sixFourKB);
+				FileUtil.copy(in, out, SIXFOUR_KB);
 			}
 
 			public String toString() {
 				return "Copy a file 64 KB per array";
+			}
+		};
+		FileCopyTask task7 = new FileCopyTask(inputFilename, "copy7.txt") {
+			public void run() {
+				FileUtil.copy(in, out, TWOFIVESIX_KB);
+			}
+
+			public String toString() {
+				return "Copy a file 256 KB per array";
 			}
 		};
 		FileCopyTask task5 = new FileCopyTask(inputFilename, "copy5.txt") {
@@ -201,11 +211,10 @@ public class FileCopyTask implements Runnable {
 			}
 		};
 		TaskTimer timer = new TaskTimer();
-		timer.measureAndPrint(task1);
-		timer.measureAndPrint(task2);
-		timer.measureAndPrint(task3);
-		timer.measureAndPrint(task4);
-		timer.measureAndPrint(task5);
-		timer.measureAndPrint(task6);
+		FileCopyTask tasks[] = { task1, task2, task3, task4, task7, task5,
+				task6 };
+		for (FileCopyTask task : tasks) {
+			timer.measureAndPrint(task);
+		}
 	}
 }

@@ -15,7 +15,7 @@ import java.io.PrintWriter;
  * PrintWriter.
  * 
  * @author Chawakorn Suphepre
- * @version 2017.03.03
+ * @version 2017.03.30
  */
 public class FileUtil {
 	/**
@@ -35,7 +35,7 @@ public class FileUtil {
 				out.write(count);
 			}
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException(e.getMessage(), e);
 		} finally {
 			try {
 				in.close();
@@ -68,7 +68,7 @@ public class FileUtil {
 				out.write(buffer, 0, count);
 			}
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException(e.getMessage(), e);
 		} finally {
 			try {
 				in.close();
@@ -100,13 +100,13 @@ public class FileUtil {
 				writer.write(s + "\n");
 			}
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException(e.getMessage(), e);
 		}
 		writer.close();
 		try {
 			buffer.close();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException(e.getMessage(), e);
 		}
 	}
 
@@ -125,20 +125,20 @@ public class FileUtil {
 	static void bcopyCharArray(InputStream in, OutputStream out) {
 		BufferedReader buffer = new BufferedReader(new InputStreamReader(in));
 		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
-		char[] c = new char[10000];
+		char[] c = new char[70];
 		int length;
 		try {
 			while ((length = buffer.read(c)) != -1) {
 				writer.write(c, 0, length);
 			}
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException(e.getMessage(), e);
 		}
 		try {
 			writer.close();
 			buffer.close();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException(e.getMessage(), e);
 		}
 	}
 }
